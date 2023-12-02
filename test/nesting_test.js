@@ -10,7 +10,7 @@ describe('nesting records', ()=>{
         });
     });
 
-    var testauthor
+    var testauthor;
     it('saving nested record to db',(done)=>{
         testauthor = new Author({
             name: 'Humayun Ahmed',
