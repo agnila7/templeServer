@@ -1,44 +1,39 @@
 const User = require("../models/user");
 const moment = require("moment");
 const login = (req, res) =>{
-    User.find(
-        { email: req.body.email},
-        function (err, docs){
-            if (err){
-                console.log(err);
+    User.find({ email: req.body.email}).then(record=>{
+        if(record===null){
+            res.send('email does not exist');
+        }else if(record.email===req.body.email){
+            if(record.password===req.body.password){
+                res.send('login successful');
             }else{
-                if(docs.length>0){
-                    if(docs[0].password==req.body.password){
-                        res.status(200).json({ status: "success" })
-                    }else{
-                        res.send("Invalid Credentials!");
-                    }
-                }
-                else{
-                    res.send("Invalid Credentials!");
-                }
+                res.send('password incorrect');
             }
-        });
+        }
+    });
     }
 const register = async (req, res)=>{
     try {
-        const user = await new User({
-            email: req.body.email,
-            password: req.body.password,
-            username: req.body.username,
-            creation_date: moment().format("MMMM Do YYYY, h:mm:ss a")
+        User.findOne({email: req.body.email}).then(record=>{
+            if(record!=null && record.email === req.body.email){
+                res.send('User Already Exists!');
+            }else {
+                const user = new User({
+                    email: req.body.email,
+                    password: req.body.password,
+                    name: req.body.username,
+                    role: req.body.role,
+                    creation_date: moment().format("MMMM Do YYYY, h:mm:ss a")
+                })
+                
+                user.save()
+                res.status(200).json({ message: 'added!' })
+            }
         })
-        
-        await user.save()
-        res.status(200).json({ message: 'added!' })
     } catch (err) {
-        console.log(err)
-        if(err.code=='11000'){
-            res.send('User Already Exists!');
-        }
-        else{
-            res.send({ status: 'err', message: err });
-        }
+        console.log(err);
+        res.send({ status: 'err', message: err });
     }
 }
 module.exports = {login,register}

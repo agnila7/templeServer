@@ -15,9 +15,9 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use('/api',appRoutes);
 app.use(logger);
-app.use((_,res)=>{
-    res.send({message: 'Not found!'})
-});
+// app.use((_,res)=>{
+//     res.send({message: 'Not found!'})
+// });
 
 // app.get('/test',(req,res)=>{
 //     res.json({ok: true});
