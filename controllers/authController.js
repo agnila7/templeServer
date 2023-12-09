@@ -3,6 +3,7 @@ const fs = require("fs");
 var path = require('path');
 const moment = require("moment");
 const NodeRSA = require('node-rsa');
+const bcrypt = require("bcrypt");
 
 var keyPath = path.join(__dirname, '../helpers/private_key.txt');
 const keyData = fs.readFileSync(keyPath).toString();
@@ -16,11 +17,13 @@ const login = (req, res) =>{
             const decryptedData = key.decrypt(Buffer.from(req.body.password, "base64"), 'utf8');
             console.log('decrypted data is ', decryptedData);
 
-            if(record.password===decryptedData){
-                res.send('login successful');
-            }else{
-                res.send('password incorrect');
-            }
+            bcrypt.compare(decryptedData, record.password, function(err, result) {
+                if (result) {
+                    res.send('login successful');
+                }else{
+                    res.send('password incorrect');
+                }
+            });
         }
     });
     }
@@ -30,16 +33,19 @@ const register = async (req, res)=>{
             if(record!=null && record.email === req.body.email){
                 res.send('User Already Exists!');
             }else {
-                const user = new User({
-                    email: req.body.email,
-                    password: req.body.password,
-                    name: req.body.username,
-                    role: req.body.role,
-                    creation_date: moment().format("MMMM Do YYYY, h:mm:ss a")
-                })
-                
-                user.save()
-                res.status(200).json({ message: 'added!' })
+                const encryptedPassword = bcrypt.hash(req.body.password, 10, function(err, hash) {
+
+                    // store hash in the database
+                    const user = new User({
+                        email: req.body.email,
+                        password: hash,
+                        name: req.body.username,
+                        role: req.body.role,
+                        creation_date: moment().format("MMMM Do YYYY, h:mm:ss a")
+                    });
+                    user.save();
+                    res.status(200).json({ message: 'added!' });
+                });
             }
         })
     } catch (err) {
