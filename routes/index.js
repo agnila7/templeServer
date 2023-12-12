@@ -5,4 +5,9 @@ const router = expressRouter();
 
 const authRouter = require('./authRoutes');
 router.use("/auth",authRouter);
+
+
+// user triggered operation routes
+const operationRouter = require('./operaionRoutes');
+router.use("/operation", operationRouter);
 module.exports = router;
