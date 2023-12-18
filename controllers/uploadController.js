@@ -1,33 +1,3 @@
-
-
-// const uploadImages = (req, res)=>{
-//     // const event = new Event(req.body);
-//     // event.save().then(record=>{
-//     //     res.status(200).send({msg: 'Event Added Successfully'});
-//     // }).catch((error)=>{
-//     //     res.status(400).send({msg: 'Event could not be added:-'+ error});
-//     // });;
-//     const files = req.files;
-//     debugger
-//     console.log(files);
-//     if(!files) {
-//         res.status(400).send({msg: 'No files:-'});
-//     }else{
-//         res.status(200).send({msg: 'Files Uploaded Successfully'});
-//     }
-    
-// }
-
-// const uploadFiles = (req, res)=>{
-//     // Event.find({}).then(records=>{
-//     //     res.status(200).send(records);
-//     // }).catch((error)=>{
-//     //     res.status(400).send({msg: 'Could not get the events:-'+ error});
-//     // });
-//     res.status(200).send({msg: 'Files Uploaded Successfully'});
-// }
-
-
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
