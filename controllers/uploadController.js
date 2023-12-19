@@ -1,13 +1,11 @@
 const multer = require('multer');
 const fs = require('fs');
-const path = require('path');
+var constants = require('../helpers/constants');
 
-const uploadedFilePath = 'C:/Users/chapa/Desktop/temple_uploaded_files/';
-const uploadedImagePath = 'C:/Users/chapa/Desktop/temple_uploaded_images/';
 // Configure multer storage and file name
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadedFilePath);
+    cb(null, constants.UPLOADED_FILE_PATH);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
@@ -15,7 +13,7 @@ const fileStorage = multer.diskStorage({
 });
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, uploadedImagePath);
+      cb(null, constants.UPLOADED_IMAGE_PATH);
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + '-' + file.originalname);

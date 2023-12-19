@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const appRoutes = require('./routes');
 var https = require('https');
 var cors = require("cors");
+var constants = require("./helpers/constants");
 const mongooseConnection = require('./helpers/mongoose-connection');
 
 var options = {
@@ -18,6 +19,7 @@ function logger(req, res, next){
     next();
 }
 app.use(bodyParser.urlencoded());
+app.use(express.static(constants.SERVED_DIRECTORY));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api',appRoutes);
