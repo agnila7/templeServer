@@ -1,4 +1,4 @@
-const Event = require("../models/event");
+const Event = require("../models/event").Event;
 
 const addEvent = (req, res)=>{
     const event = new Event(req.body);
