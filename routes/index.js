@@ -1,5 +1,6 @@
 const {Router: expressRouter} = require("express");
 const router = expressRouter();
+const emailController = require('../controllers/emailController');
 
 // auth routes
 
@@ -12,6 +13,10 @@ router.use("/auth",authRouter);
 const listRouter = require('./listRoutes');
 router.use("/list", listRouter);
 
+
+//send email
+
+router.route('/email').post(emailController.sendEmail);
 
 // user triggered operation routes
 const operationRouter = require('./operaionRoutes');
