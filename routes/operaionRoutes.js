@@ -1,16 +1,16 @@
 const express = require('express');
-const authController = require('../controllers/authController');
 const operationRouter = express.Router();
 const eventRouter = require('./eventRoutes');
 const almsRouter = require('./almsRoutes');
 const uploadRouter = require('./uploadRoutes');
-operationRouter.use(authController.verifyToken);
 
 // Event routes
-operationRouter.use("/event",eventRouter);
+operationRouter.use("/event",eventRouter.eventRouter);
+operationRouter.use("/event",eventRouter.eventRouterProtected);
 
 // Alms routes
-operationRouter.use("/alms",almsRouter);
+operationRouter.use("/alms",almsRouter.almsRouter);
+operationRouter.use("/alms",almsRouter.almsRouterProtected);
 
 // upload route
 operationRouter.use('/upload',uploadRouter);

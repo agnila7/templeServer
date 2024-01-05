@@ -14,7 +14,7 @@ function sendEmail(req, res, next){
 
     const mailOptions = {
         from: 'site.torontobd.monastery@gmail.com',
-        to: 'chapalbuet9@gmail.com', // Replace with recipient email address
+        to: 'chapalbuet@yahoo.com', // Replace with recipient email address
         subject: req.body.subject,
         text: `
           Name: ${req.body.name}

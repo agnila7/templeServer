@@ -68,8 +68,23 @@ function verifyToken(req, res, next){
     if(!payload){
         return res.status(401).send('Unauthorized Req');
     }
+    console.log(payload);
     req.userName = payload.name;
     next();
 }
 
-module.exports = {login,register, verifyToken};
+function verifyAdmin(req, res, next){
+    if(!req.headers.authorization){
+        return res.status(401).send('Unauthorized Req');
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    let payload = jwt.verify(token, keyData);
+    if(!payload || (payload.role!= 'Admin' && payload.role!= 'Super Admin')){
+        return res.status(401).send('Unauthorized Req');
+    }
+    
+    req.userName = payload.name;
+    next();
+}
+
+module.exports = {login,register, verifyToken, verifyAdmin};

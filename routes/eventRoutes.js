@@ -1,8 +1,11 @@
 const express = require('express');
+const authController = require('../controllers/authController');
 const eventController = require('../controllers/eventController');
+const eventRouterProtected = express.Router();
 const eventRouter = express.Router();
-eventRouter.route('/add').post(eventController.addEvent);
-eventRouter.route('/edit').post(eventController.editEvent);
-eventRouter.route('/delete').post(eventController.deleteEvent);
+eventRouterProtected.use(authController.verifyAdmin);
+eventRouterProtected.route('/add').post(eventController.addEvent);
+eventRouterProtected.route('/edit').post(eventController.editEvent);
+eventRouterProtected.route('/delete').post(eventController.deleteEvent);
 eventRouter.route('/all').get(eventController.getAllEvents);
-module.exports = eventRouter;
+module.exports = {eventRouter, eventRouterProtected};

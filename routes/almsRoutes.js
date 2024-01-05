@@ -1,8 +1,11 @@
 const express = require('express');
+const authController = require('../controllers/authController');
 const almsController = require('../controllers/almsController');
 const almsRouter = express.Router();
-almsRouter.route('/add').post(almsController.addAlms);
-almsRouter.route('/edit').post(almsController.editAlms);
-almsRouter.route('/delete').post(almsController.deleteAlms);
+const almsRouterProtected = express.Router();
+almsRouterProtected.use(authController.verifyAdmin);
+almsRouterProtected.route('/add').post(almsController.addAlms);
+almsRouterProtected.route('/edit').post(almsController.editAlms);
+almsRouterProtected.route('/delete').post(almsController.deleteAlms);
 almsRouter.route('/all').get(almsController.getAllAlms);
-module.exports = almsRouter;
+module.exports = {almsRouter, almsRouterProtected};
