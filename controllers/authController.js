@@ -54,7 +54,6 @@ const register = async (req, res)=>{
             }
         })
     } catch (err) {
-        console.log(err);
         res.status(400).send({ status: 'err', msg: err });
     }
 }
@@ -78,7 +77,17 @@ function verifyAdmin(req, res, next){
         return res.status(401).send({msg: 'Unauthorized Req'});
     }
     let token = req.headers.authorization.split(' ')[1];
-    let payload = jwt.verify(token, keyData);
+    if(token){
+        try{
+            payload = jwt.verify(token, keyData);
+        }catch (error){
+            return res.status(401).send({msg: 'Unauthorized Req'+ error});
+        }
+    }else {
+        return res.status(401).send({msg: 'Unauthorized Req'});
+    }
+    
+    
     if(!payload || (payload.role!= 'Admin' && payload.role!= 'Super Admin')){
         return res.status(401).send({msg: 'Unauthorized Req'});
     }

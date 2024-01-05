@@ -22,8 +22,9 @@ app.use(bodyParser.urlencoded());
 app.use(express.static(constants.SERVED_DIRECTORY));
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/api',appRoutes);
 app.use(logger);
+app.use('/api',appRoutes);
+
 
 mongooseConnection();
 https.createServer(options, app).listen(PORT,()=>console.log(`Server is now listening on port ${PORT}`));

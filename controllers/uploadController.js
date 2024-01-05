@@ -30,16 +30,14 @@ const uploadImages = (req, res) => {
   imageUpload.array('files', 10)(req, res, (err) => {
     if (err instanceof multer.MulterError) {
         // A Multer error occurred when uploading.
-        res.status(500).send({ error: { message: `Multer uploading error: ${err.message}` } }).end();
+        res.status(500).send({ msg: `Multer uploading error: ${err.message}`}).end();
         return;
     } else if (err) {
         // An unknown error occurred when uploading.
         if (err.name == 'ExtensionError') {
-            console.log('ExtensionError'+err.message);
-            res.status(413).send({ error: { message: err.message } }).end();
+            res.status(413).send({ msg: err.message}).end();
         } else {
-            console.log('unknownError'+err.message);
-            res.status(500).send({ error: { message: `unknown uploading error: ${err.message}` } }).end();
+            res.status(500).send( { msg: `unknown uploading error: ${err.message}`}).end();
         }
         return;
     }
@@ -51,10 +49,10 @@ const uploadImages = (req, res) => {
       const maxSize = 15 * 1024 * 1024; // 15MB
 
       if (!allowedTypes.includes(file.mimetype)) {
-        errors.push(`Invalid file type: ${file.originalname}`);
+        errors.push({msg: `Invalid file type: ${file.originalname}`});
       }
       if (file.size > maxSize) {
-        errors.push(`File too large: ${file.originalname}`);
+        errors.push({msg :`File too large: ${file.originalname}`});
       }
     });
 
@@ -65,7 +63,7 @@ const uploadImages = (req, res) => {
         fs.unlinkSync(file.path);
       });
 
-      return res.status(400).json({ errors });
+      return res.status(400).json(errors[0]);
     }
     res.status(200).send({msg: 'Your images uploaded.'});
   });
@@ -78,17 +76,15 @@ const uploadFiles = (req, res) => {
     fileUpload.array('files', 10)(req, res, (err) => {
       if (err instanceof multer.MulterError) {
           // A Multer error occurred when uploading.
-          res.status(500).send({ error: { message: `Multer uploading error: ${err.message}` } }).end();
-          console.log(err.message);
+          res.status(500).send({ msg: `Multer uploading error: ${err.message}` }).end();
           return;
       } else if (err) {
           // An unknown error occurred when uploading.
           if (err.name == 'ExtensionError') {
-              console.log('ExtensionError'+err.message);
-              res.status(413).send({ error: { message: err.message } }).end();
+              res.status(413).send({ msg: err.message }).end();
           } else {
               console.log('unknownError'+err.message);
-              res.status(500).send({ error: { message: `unknown uploading error: ${err.message}` } }).end();
+              res.status(500).send( { msg: `unknown uploading error: ${err.message}`}).end();
           }
           return;
       }
