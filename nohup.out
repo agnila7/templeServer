@@ -1,9 +1,0 @@
-Sat, 06 Jan 2024 21:42:39 GMT body-parser deprecated undefined extended: provide extended option at server.js:21:20
-Server is now listening on port 3000
-Connected to db!
-[1704577371553] GET /api/list/images
-[1704577387872] GET /api/list/images
-[1704577390073] GET /api/list/images
-[1704577398263] GET /api/operation/event/all
-[1704577405645] POST /api/operation/event/add
-[1704577408710] GET /api/operation/event/all
