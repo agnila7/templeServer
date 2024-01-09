@@ -24,6 +24,15 @@ app.use(function requireHTTPS(req, res, next) {
 });
 redirectServer.listen(80);
 
+// redirect bso-toronto.ca to www.bso-toronto.ca
+app.use(function requireWWW(req, res, next) {
+  if(!req.headers.host.startsWith('www.')){
+    return res.redirect('https://' + 'www.' + req.headers.host + req.url);
+  }
+  next();
+});
+
+http.createServer(app).listen(80);
 
 app.use(express.static(__dirname + '/dist/TempleWebsite'));
 
