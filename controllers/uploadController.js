@@ -35,7 +35,8 @@ const path = require('path');
 // Configure multer storage and file name
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'C:/Users/chapa/Desktop/temple_uploaded_images/');
+    cb(null, 'C:/Users/barua/Desktop/image');
+    // this change is done for agnila's computer path
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);

@@ -20,7 +20,7 @@ function logger(req, res, next){
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/api',appRoutes);
+app.use('/api',appRoutes);// decides the endpoints
 app.use(logger);
 // app.use((_,res)=>{
 //     res.send({message: 'Not found!'})
