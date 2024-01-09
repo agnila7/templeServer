@@ -8,13 +8,11 @@ var fs = require('fs');
 var options = {
     key: fs.readFileSync('/home/ec2-user/templeServer/certs/cert.key'),
     cert: fs.readFileSync('/home/ec2-user/templeServer/certs/cert.crt')
-  };
-
-
+};
 
 
 const app = express();
 app.use(express.static(__dirname + '/dist/TempleWebsite'));
 
-app.get('/*', (req, res) => res.sendFile(path.join(__dirname)));
+app.get('/*', (req, res) => res.sendFile(path.join(__dirname + '/dist/TempleWebsite/index.html')));
 https.createServer(options, app).listen(PORT,()=>console.log(`Server is now listening on port ${PORT}`));
