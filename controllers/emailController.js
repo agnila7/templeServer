@@ -1,20 +1,18 @@
 const nodemailer = require('nodemailer');
 
 function sendEmail(req, res, next){
-    console.log('email sent');
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: 'site.torontobd.monastery@gmail.com',
-          //pass: '123456Monastery'
           pass: 'zhmw vchq jeed pvni'
         }
     });
 
     const mailOptions = {
         from: 'site.torontobd.monastery@gmail.com',
-        to: 'chapalbuet@yahoo.com', // Replace with recipient email address
+        to: 'admin@bso-toronto.ca',
         subject: req.body.subject,
         text: `
           Name: ${req.body.name}
@@ -23,15 +21,11 @@ function sendEmail(req, res, next){
         `
     };
 
-    console.log(mailOptions)
-
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log(error);
-          res.status(500).send('Error sending email');
+          res.status(500).send({msg: 'Error sending email:-'+ error});
         } else {
-          console.log('Email sent:', info.response);
-          res.status(200).send('Email sent successfully');
+          res.status(200).send({msg: 'Email sent successfully'});
         }
     });
 
