@@ -15,14 +15,12 @@ var options = {
 const app = express();
 
 // redirect http to https
-redirectServer = http.createServer(app);
 app.use(function requireHTTPS(req, res, next) {
   if (!req.secure) {
     return res.redirect('https://' + req.headers.host + req.url);
   }
   next();
 });
-redirectServer.listen(80);
 
 // redirect bso-toronto.ca to www.bso-toronto.ca
 app.use(function requireWWW(req, res, next) {
