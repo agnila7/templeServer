@@ -11,64 +11,10 @@ const fileStorage = multer.diskStorage({
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
-const imageStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, constants.UPLOADED_IMAGE_PATH);
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + file.originalname);
-    }
-  });
-
 
 // Create multer upload instance
 const fileUpload = multer({ storage: fileStorage });
-const imageUpload = multer({ storage: imageStorage });
 // Custom file upload middleware
-const uploadImages = (req, res) => {
-  // Use multer upload instance
-  imageUpload.array('files', 10)(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-        // A Multer error occurred when uploading.
-        res.status(500).send({ msg: `Multer uploading error: ${err.message}`}).end();
-        return;
-    } else if (err) {
-        // An unknown error occurred when uploading.
-        if (err.name == 'ExtensionError') {
-            res.status(413).send({ msg: err.message}).end();
-        } else {
-            res.status(500).send( { msg: `unknown uploading error: ${err.message}`}).end();
-        }
-        return;
-    }
-    const files = req.files;
-    const errors = [];
-    // Validate file types and sizes
-    files.forEach((file) => {
-      const allowedTypes = ['image/jpeg', 'image/png','image/jpg', 'image/svg'];
-      const maxSize = 15 * 1024 * 1024; // 15MB
-
-      if (!allowedTypes.includes(file.mimetype)) {
-        errors.push({msg: `Invalid file type: ${file.originalname}`});
-      }
-      if (file.size > maxSize) {
-        errors.push({msg :`File too large: ${file.originalname}`});
-      }
-    });
-
-    // Handle validation errors
-    if (errors.length > 0) {
-      // Remove uploaded files
-      files.forEach((file) => {
-        fs.unlinkSync(file.path);
-      });
-
-      return res.status(400).json(errors[0]);
-    }
-    res.status(200).send({msg: 'Your images uploaded.'});
-  });
-};
-
 
 // Custom file upload middleware
 const uploadFiles = (req, res) => {
@@ -92,4 +38,4 @@ const uploadFiles = (req, res) => {
     });
   };
 
-module.exports = {uploadImages, uploadFiles};
+module.exports = { uploadFiles};
